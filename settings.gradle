@@ -1,0 +1,5 @@
+rootProject.name = 'template.front.back'
+
+include 'ui'
+include 'db'
+include 'backend:api'

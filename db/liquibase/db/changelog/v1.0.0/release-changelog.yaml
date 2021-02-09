@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - include:
+      - file: init.sql
+      - relativeToChangelogFile: true
+  - include:
+      - file: dev/init-dml.sql
+      - relativeToChangelogFile: true
+#  - changeSet:
+#      id: tag-v1.0.0
+#      author: sadretdinov-mr
+#      changes:
+#        - tagDatabase:
+#            tag: D-01.000.00

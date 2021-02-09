@@ -1,0 +1,27 @@
+server:
+  port: 8888
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DB_HOST:localhost}:5433/db
+    username: db
+    password: db
+  jpa:
+    show-sql: true
+    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQL94Dialect
+  test.database.replace: NONE
+  liquibase:
+    contexts: local
+
+cors.allow: true
+
+logging:
+  config: classpath:logback-spring.xml
+
+# egress
+egress:
+  base-url: http://${EGRESS_HOST:localhost:8090}
+  connect-timeout: 5000
+  read-timeout: 5000
+  write-timeout: 5000

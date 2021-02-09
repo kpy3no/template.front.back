@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:13.1
+    environment:
+      POSTGRES_USER: db
+      POSTGRES_PASSWORD: db
+      POSTGRES_DB: db
+    ports:
+      - '5433:5432'
+  api:
+# OR YOUR IMAGE URL
+    build: ./backend/api
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      PUB_CERT_FILE: file:/certs/public_key.der
+      DB_HOST: db
+      EGRESS_HOST: mock-api:8080
+    volumes:
+      - ./backend/api/src/main/resources/public_key.der:/certs/public_key.der
+    ports:
+      - '8080:8080'
+    depends_on:
+      - db
+  ui:
+    build: ./ui
+    environment:
+      NGINX_LOG_TO_VOLUME : "yes"
+    ports:
+      - '3005:3005'
+    volumes:
+      - ./campaign-ui/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./campaign-ui/public/index.html:/opt/app-root/src/dist/index.html
+      - ./campaign-ui/public/css:/opt/app-root/src/dist/css
+    depends_on:
+      - api
+  mock-api:
+    image: rodolpheche/wiremock:latest
+    volumes:
+      - ./_wiremock/mappings:/home/wiremock/mappings
+    ports:
+      - '8090:8080'

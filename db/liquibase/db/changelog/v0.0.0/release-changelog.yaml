@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: tag-v0.0.0
+      author: kpy3no
+      changes:
+        - tagDatabase:
+            tag: 00.000.00

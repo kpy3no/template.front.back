@@ -1,0 +1,55 @@
+plugins {
+    id 'org.springframework.boot' version "${springBootVersion}"
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-validation')
+    implementation('org.springframework.boot:spring-boot-starter-actuator')
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation('org.springframework.boot:spring-boot-starter-webflux')
+    implementation('io.micrometer:micrometer-registry-prometheus:1.5.4')
+    implementation('co.elastic.logging:logback-ecs-encoder:0.5.1')
+    implementation('org.apache.commons:commons-lang3:3.11')
+    implementation('org.postgresql:postgresql')
+
+    testImplementation('org.liquibase:liquibase-core')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('com.github.tomakehurst:wiremock-jre8:2.27.2')
+    testImplementation("org.testcontainers:postgresql:1.15.1")
+
+    compileOnly('org.springframework.boot:spring-boot-configuration-processor')
+}
+
+
+test {
+    include('ru/template/example/**')
+}
+
+sourceSets {
+    test {
+        resources {
+            srcDir('../../db/liquibase')
+        }
+    }
+}
+
+springBoot {
+    buildInfo {
+        properties {
+            additional = [
+                    'buildNumber': "${buildNumber}",
+                    'gitCommit'  : "${gitCommit}"
+            ]
+        }
+    }
+}

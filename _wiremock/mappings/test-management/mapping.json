@@ -1,0 +1,13 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "/management/test"
+      },
+      "response": {
+        "status": 200
+      }
+    }
+  ]
+}
