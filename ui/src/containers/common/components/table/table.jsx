@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,10 +9,8 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import {EnhancedTableToolbar} from './toolBar'
 import {EnhancedTableHead} from './tableHead'
-import PropTypes from 'prop-types';
-import _ from 'lodash';
+import {EnhancedTableToolbar} from './toolBar'
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -39,7 +38,29 @@ function stableSort(array, comparator) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-
+const useStyles = makeStyles((theme) => ({
+    root: {
+        width: '100%',
+    },
+    paper: {
+        width: '100%',
+        marginBottom: theme.spacing(2),
+    },
+    table: {
+        minWidth: 750,
+    },
+    visuallyHidden: {
+        border: 0,
+        clip: 'rect(0 0 0 0)',
+        height: 1,
+        margin: -1,
+        overflow: 'hidden',
+        padding: 0,
+        position: 'absolute',
+        top: 20,
+        width: 1,
+    },
+}));
 
 export default function EnhancedTable(props) {
     const classes = useStyles();
@@ -57,7 +78,7 @@ export default function EnhancedTable(props) {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = props.items.map((n) => n.name);
+            const newSelecteds = props.rows.map((n) => n.id);
             setSelected(newSelecteds);
             return;
         }
@@ -95,35 +116,30 @@ export default function EnhancedTable(props) {
 
     const isSelected = (name) => selected.indexOf(name) !== -1;
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.items.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.rows.length - page * rowsPerPage);
 
     const formRow = (row, index) => {
-        const isItemSelected = isSelected(row.name);
+        const isItemSelected = isSelected(row.id);
         const labelId = `enhanced-table-checkbox-${index}`;
 
         return (
             <TableRow
                 hover
-                onClick={(event) => handleClick(event, row.name)}
+                onClick={(event) => handleClick(event, row.id)}
                 role="checkbox"
                 aria-checked={isItemSelected}
                 tabIndex={-1}
-                key={row.name}
+                key={row.id}
                 selected={isItemSelected}
             >
                 <TableCell padding="checkbox">
                     <Checkbox
                         checked={isItemSelected}
-                        inputProps={{'aria-labelledby': labelId}}
+                        inputProps={{ 'aria-labelledby': labelId }}
                     />
                 </TableCell>
-
-                {_.map(props.dataMap, (field, idx) => (
-                    <div>
-                        {field.isTitle && <TableCell component="th" id={labelId} scope="row" padding="none">{row[field.id]}</TableCell>}
-                        {!field.isTitle && <TableCell align="right">{row[field.id]}</TableCell>}
-                    </div>
-                ))}
+                <TableCell component="th" id={labelId} scope="row" padding="none">{row.id}</TableCell>
+                <TableCell align="right">{row.name}</TableCell>
             </TableRow>
         );
     }
@@ -131,7 +147,13 @@ export default function EnhancedTable(props) {
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar numSelected={selected.length} title={props.toolbar.toolbarTitle} delete={() => props.toolbar.delete(selected)} edit={() => props.toolbar.edit(selected)}/>
+                <EnhancedTableToolbar
+                    numSelected={selected.length}
+                    title={props.toolbar.toolbarTitle}
+                    delete={() => props.toolbar.delete(selected)}
+                    edit={() => props.toolbar.edit(selected)}
+                    add={props.toolbar.add}
+                />
                 <TableContainer>
                     <Table
                         className={classes.table}
@@ -146,18 +168,16 @@ export default function EnhancedTable(props) {
                             orderBy={orderBy}
                             onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
-                            rowCount={props.items.length}
+                            rowCount={props.rows.length}
                             dataMap={props.dataMap}
                         />
                         <TableBody>
-                            {stableSort(props.items, getComparator(order, orderBy))
+                            {stableSort(props.rows, getComparator(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row, index) => {
-                                    return formRow(row, index)
-                                })}
+                                .map(formRow)}
                             {emptyRows > 0 && (
-                                <TableRow style={{height: 53 * emptyRows}}>
-                                    <TableCell colSpan={6}/>
+                                <TableRow style={{ height: (53) * emptyRows }}>
+                                    <TableCell colSpan={6} />
                                 </TableRow>
                             )}
                         </TableBody>
@@ -166,7 +186,7 @@ export default function EnhancedTable(props) {
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
-                    count={props.items.length}
+                    count={props.rows.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onChangePage={handleChangePage}
@@ -177,47 +197,24 @@ export default function EnhancedTable(props) {
     );
 }
 
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
-    },
-    paper: {
-        width: '100%',
-        marginBottom: theme.spacing(2),
-    },
-    table: {
-        minWidth: 750,
-    },
-    visuallyHidden: {
-        border: 0,
-        clip: 'rect(0 0 0 0)',
-        height: 1,
-        margin: -1,
-        overflow: 'hidden',
-        padding: 0,
-        position: 'absolute',
-        top: 20,
-        width: 1,
-    },
-}));
-
 EnhancedTable.propTypes = {
     dataMap: PropTypes.array,
-    items: PropTypes.array,
+    rows: PropTypes.array,
     toolbar: PropTypes.shape({
         toolbarTitle: PropTypes.string,
         delete: PropTypes.func,
-        edit: PropTypes.func
+        edit: PropTypes.func,
+        add: PropTypes.func
     })
 };
 
 EnhancedTable.defaultProps = {
     dataMap: [],
-    items: [],
+    rows: [],
     toolbar: {
         toolbarTitle: '',
         delete: null,
-        edit: null
+        edit: null,
+        add: null
     }
 };

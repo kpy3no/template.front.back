@@ -4,7 +4,7 @@ import CityDetails from "./containers/cities/CityDetails";
 
 export const routes = [
     {
-        path: '/cities',
+        path: '/',
         Component: CityList,
         layout: 'default',
         name: 'Города',
