@@ -21,7 +21,7 @@ export default function AbstractEditForm({id, module, stateName, newItem, render
 
     useEffect(() => {
         if (id && !isNew) {
-            // api.getItem(dispatch, module, id);
+            api.getItem(dispatch, module, id);
         }
     }, []);
 

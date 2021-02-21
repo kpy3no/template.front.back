@@ -5,6 +5,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import AddIcon from "@material-ui/icons/Add";
 import PropTypes from "prop-types";
 import React from "react";
 import {lighten, makeStyles} from "@material-ui/core/styles";
@@ -49,9 +50,17 @@ export const EnhancedTableToolbar = (props) => {
                 </Typography>
             )}
 
+            {numSelected === 0 && (
+                <Tooltip title="Добавить">
+                    <IconButton aria-label="add">
+                        <AddIcon onClick={props.add} />
+                    </IconButton>
+                </Tooltip>
+            )}
+
             {numSelected > 0 && (
                 <div className="row">
-                    <div hidden={numSelected > 1} className="col-6">
+                    <div hidden={props.edit && numSelected > 1} className="col-6">
                         <Tooltip title="Редактировать">
                             <IconButton aria-label="edit">
                                 <EditIcon onClick={props.edit} />
@@ -75,5 +84,6 @@ EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     delete: PropTypes.func,
-    edit: PropTypes.func
+    edit: PropTypes.func,
+    add: PropTypes.func
 };

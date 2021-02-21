@@ -1,46 +1,49 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import EnhancedTable from "../common/components/table/table";
+import * as api from '../../api/cruds-api';
+import Loader from "../Loader";
+
 
 const headCells = [
-    { id: 'name', numeric: false, label: 'Наименование' }
-];
-
-
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Donut', 452, 25.0, 51, 4.9),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-    createData('Honeycomb', 408, 3.2, 87, 6.5),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Jelly Bean', 375, 0.0, 94, 0.0),
-    createData('KitKat', 518, 26.0, 65, 7.0),
-    createData('Lollipop', 392, 0.2, 98, 0.0),
-    createData('Marshmallow', 318, 0, 81, 2.0),
-    createData('Nougat', 360, 19.0, 9, 37.0),
-    createData('Oreo', 437, 18.0, 63, 4.0),
+    { property: 'id', disablePadding: true, label: 'ID' },
+    { property: 'name', numeric: true, disablePadding: false, label: 'Имя' }
 ];
 
 // eslint-disable-next-line no-unused-vars
 export default function CityList() {
     const history = useHistory();
+    const dispatch = useDispatch();
+
+    const {list, isLoading} = useSelector(state => state.citiesState);
+
+    useEffect(() => {
+        api.getList(dispatch, 'cities')
+    }, []);
+
+    if (isLoading) {
+        return (
+            <Loader isLoading = {isLoading}/>
+        );
+    }
+
+    const handleDeleteItem = (selected) => api.deleteItems(dispatch, 'cities', selected).then(() => {
+        api.getList(dispatch, 'cities')
+    }).catch(error => {
+        alert(error)
+    });
 
     return (
         <EnhancedTable
             dataMap={headCells}
             toolbar={{
                 toolbarTitle: 'Города',
-                delete: (selected) => alert(selected),
-                edit: (selected) => alert(selected)
+                delete: (selected) => handleDeleteItem(selected),
+                edit: (selected) => history.push(`/cities/${selected}`),
+                add: () => history.push(`/cities/new`)
             }}
-            items={rows}
+            rows={list}
         />
-        // <h1>Hello World</h1>
     );
 }

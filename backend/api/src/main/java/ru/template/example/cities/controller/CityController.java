@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.template.example.cities.controller.dto.CityDto;
 import ru.template.example.cities.controller.dto.CityDtoConverter;
 import ru.template.example.cities.controller.dto.CityFilterDto;
+import ru.template.example.cities.controller.dto.IdsDto;
 import ru.template.example.cities.service.CityService;
 import ru.template.example.common.PageResponse;
 
@@ -20,6 +21,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
@@ -55,6 +57,11 @@ public class CityController {
         service.delete(id);
     }
 
+    @DeleteMapping
+    public void deleteAll(@RequestBody IdsDto idsDto) {
+        service.deleteAll(idsDto.getIds());
+    }
+
     @PostMapping(path = "filter",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -70,4 +77,11 @@ public class CityController {
                 CityDtoConverter::toDto
         );
     }
+
+    @GetMapping(path = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public CityDto get(@PathVariable Long id) {
+        return toDto(service.get(id));
+    }
+
 }

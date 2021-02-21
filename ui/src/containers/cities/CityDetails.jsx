@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import {FieldInputText} from "../common/components/fieldInputText";
 import AbstractEditForm from "../common/AbstractEditForm/AbstractEditForm";
-import TextField from "@material-ui/core/TextField";
-import {Field} from "react-final-form";
 // import {InputText} from "../common/components/inputText";
 import {FieldInputText} from "../common/components/fieldInputText";
 
@@ -11,7 +9,7 @@ export default function CityDetails(props) {
     const {id} = props.match.params;
 
     const newItem = {
-        name: 'Novosibirsk'
+        name: ''
     };
 
     const fields = () => (
@@ -27,7 +25,7 @@ export default function CityDetails(props) {
             id={id}
             newItem={newItem}
             renderFields={fields}
-            onCloseRoute={`/cities`}
+            onCloseRoute={`/`}
         />
     );
 }

@@ -116,3 +116,8 @@ export const save = (dispatch, module, data, successCallback, errorCallback) => 
 };
 
 export const deleteItem = (dispatch, module, id) => axios.delete(`/${module}/${id}`);
+export const deleteItems = (dispatch, module, ids) => axios.delete(`/${module}`, {
+    data: {
+        ids: ids
+    }
+});

@@ -11,6 +11,8 @@ import ru.template.example.cities.repository.CitySpecification;
 import ru.template.example.common.EntityAlreadyExistsException;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +29,11 @@ public class CityService {
 
     public void delete(Long id) {
         repo.delete(City.builder().id(id).build());
+    }
+
+    public void deleteAll(Set<Long> ids) {
+        Set<City> cities = ids.stream().map(id -> City.builder().id(id).build()).collect(Collectors.toSet());
+        repo.deleteAll(cities);
     }
 
     public List<City> findAll() {
@@ -46,5 +53,9 @@ public class CityService {
         if (entityExists) {
             throw new EntityAlreadyExistsException(String.format("City is already existed with this name %s", entity.getName()));
         }
+    }
+
+    public City get(Long id) {
+        return repo.getOne(id);
     }
 }
