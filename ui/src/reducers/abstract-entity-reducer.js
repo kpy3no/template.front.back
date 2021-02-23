@@ -5,6 +5,7 @@ const initialState = {
     list: [],
     item: {},
     totalPages: 0,
+    totalElements: 0,
     pagination: {
         page: 0,
         size: 5
@@ -29,6 +30,7 @@ export default entityType =>
                     list: action.list,
                     isLoading: false,
                     totalPages: action.totalPages,
+                    totalElements: action.totalElements,
                     pagination: action.pagination
                 };
 

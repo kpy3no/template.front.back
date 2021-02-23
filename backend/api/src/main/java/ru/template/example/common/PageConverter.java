@@ -25,6 +25,7 @@ public final class PageConverter {
         return PageResponse.<D>builder()
                 .content(content)
                 .totalPages(page.getTotalPages())
+                .totalElements(page.getTotalElements())
                 .size(page.getSize())
                 .number(page.getNumber())
                 .build();

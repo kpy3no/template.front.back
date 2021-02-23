@@ -42,6 +42,7 @@ export const getFilteredList = (dispatch, module, filter, sort, pagination) => {
             dispatch({
                 type: `GET_${suffix}_LIST`,
                 totalPages: _.get(response, 'data.totalPages', 0),
+                totalElements: _.get(response, 'data.totalElements', 0),
                 list: response.data.content,
                 pagination: {
                     size: _.get(response, 'data.size', 5),
