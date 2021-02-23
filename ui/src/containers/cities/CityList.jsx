@@ -1,9 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import EnhancedTable from "../common/components/table/table";
 import * as api from '../../api/cruds-api';
 import Loader from "../Loader";
+import TablePagination from "@material-ui/core/TablePagination";
 
 
 const headCells = [
@@ -16,11 +17,11 @@ export default function CityList() {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    const {list, isLoading} = useSelector(state => state.citiesState);
+    const {pagination, list, isLoading, totalElements} = useSelector(state => state.citiesState);
 
-    useEffect(() => {
-        api.getList(dispatch, 'cities')
-    }, []);
+    const getFilteredList = newPagination => api.getFilteredList(dispatch, 'cities', null, null, newPagination);
+
+    useEffect(() => getFilteredList({...pagination, page: 0}), []);
 
     if (isLoading) {
         return (
@@ -34,16 +35,43 @@ export default function CityList() {
         alert(error)
     });
 
+    const handleChangePage = (event, newPage) => {
+        getFilteredList({...pagination, page: newPage})
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        const pageSize = parseInt(event.target.value, 10)
+        getFilteredList({page: 0, size: pageSize})
+    };
+
     return (
-        <EnhancedTable
-            dataMap={headCells}
-            toolbar={{
-                toolbarTitle: 'Города',
-                delete: (selected) => handleDeleteItem(selected),
-                edit: (selected) => history.push(`/cities/${selected}`),
-                add: () => history.push(`/cities/new`)
-            }}
-            rows={list}
-        />
+        <div>
+            <EnhancedTable
+                dataMap={headCells}
+                toolbar={{
+                    toolbarTitle: 'Города',
+                    delete: (selected) => handleDeleteItem(selected),
+                    edit: (selected) => history.push(`/cities/${selected}`),
+                    add: () => history.push(`/cities/new`)
+                }}
+                rows={list}
+                pagination={{
+                    onChangePage: handleChangePage,
+                    onChangeRowsPerPage: handleChangeRowsPerPage,
+                    totalElements: totalElements,
+                    pageSize: pagination.size,
+                    pageNumber: pagination.page
+                }}
+            />
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25, 50]}
+                component="div"
+                count={totalElements}
+                rowsPerPage={pagination.size}
+                page={pagination.page}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+        </div>
     );
 }
