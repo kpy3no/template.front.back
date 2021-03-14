@@ -31,6 +31,12 @@ Compile project:
 
 Set up database and use liquibase scripts ([database](db/README.md)).
 
+### Start front
+go to ui folder
+use commands:
+npm install
+npm start
+
 ### Start modules
 
 ```
@@ -41,11 +47,6 @@ Open browser http://localhost:3005/index.html
 #### Launch in cluster [Minishift](https://www.okd.io/minishift/)
 
 https://github.com/kpy3no/cd_template_front_back.git
-
-Clone the repository with scripts, and follow the instructions for local deployment.
-```
-git clone https://sbrf-bitbucket.sigma.sbrf.ru/projects/CI00751332/repos/ci02656582_sbercms_campaign/browse
-```
 
 ## App parameters
 
