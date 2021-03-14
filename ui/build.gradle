@@ -1,12 +1,23 @@
 plugins {
-    id 'java'
+    id 'com.github.node-gradle.node' version '3.0.1'
 }
 
+apply plugin: 'base'
 
-repositories {
-    mavenCentral()
+npm_run_build {
+    inputs.dir 'src'
+
+    inputs.file 'package.json'
+    inputs.file 'package-lock.json'
+
+    outputs.dir 'dist'
+}
+
+assemble.dependsOn npm_run_build
+
+npm_run_start {
+
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
