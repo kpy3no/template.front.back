@@ -30,7 +30,7 @@ export default function CityList() {
     }
 
     const handleDeleteItem = (selected) => api.deleteItems(dispatch, 'cities', selected).then(() => {
-        api.getList(dispatch, 'cities')
+        getFilteredList({...pagination, page: 0})
     }).catch(error => {
         alert(error)
     });
@@ -55,13 +55,6 @@ export default function CityList() {
                     add: () => history.push(`/cities/new`)
                 }}
                 rows={list}
-                pagination={{
-                    onChangePage: handleChangePage,
-                    onChangeRowsPerPage: handleChangeRowsPerPage,
-                    totalElements: totalElements,
-                    pageSize: pagination.size,
-                    pageNumber: pagination.page
-                }}
             />
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25, 50]}

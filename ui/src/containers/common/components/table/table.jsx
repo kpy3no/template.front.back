@@ -177,13 +177,6 @@ EnhancedTable.propTypes = {
         edit: PropTypes.func,
         add: PropTypes.func
     }),
-    pagination: PropTypes.shape({
-        onChangePage: PropTypes.func,
-        onChangeRowsPerPage: PropTypes.func,
-        totalElements: PropTypes.number,
-        pageSize: PropTypes.number,
-        pageNumber: PropTypes.number
-    })
 };
 
 EnhancedTable.defaultProps = {
