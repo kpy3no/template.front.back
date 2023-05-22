@@ -9,19 +9,11 @@ export default function Router() {
             <Switch>
                 {routes.map(({path, Component, layout}) => (
                     <Route exact path={path} key={path} render={props => {
-                        if (layout === 'default') {
-                            return (
-                                <div>
-                                        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                                        <Component {...props} />
-                                </div>);
-                        } else {
-                            return (
-                                <div>
-                                        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                                        <Component {...props} />
-                                </div>);
-                        }
+                        return (
+                            <div>
+                                {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+                                <Component {...props} />
+                            </div>);
                     }}
                     />
                 ))}

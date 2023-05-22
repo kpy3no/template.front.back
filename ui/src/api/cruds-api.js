@@ -14,61 +14,6 @@ export const showError = (dispatch, axiosError) => {
 
 const getSuffix = (module) => module.toUpperCase().split('/')[0];
 
-export const getFilteredList = (dispatch, module, filter, sort, pagination) => {
-
-    const suffix = getSuffix(module);
-
-    let params = {};
-
-    if (pagination && pagination.size) {
-        params.size = pagination.size;
-        params.page = _.get(pagination, 'page', 0)
-    }
-
-    if (sort) {
-        params = {...sort, ...params};
-    }
-
-    const config = {
-        params
-    };
-
-    dispatch({
-        type: `GET_${suffix}_LIST_START`
-    });
-
-    axios.post(`/${module}/filter`, filter || {}, config)
-        .then(response => {
-            dispatch({
-                type: `GET_${suffix}_LIST`,
-                totalPages: _.get(response, 'data.totalPages', 0),
-                totalElements: _.get(response, 'data.totalElements', 0),
-                list: response.data.content,
-                pagination: {
-                    size: _.get(response, 'data.size', 5),
-                    page: _.get(response, 'data.number', 0)
-                }
-            });
-        }).catch(axiosError => showError(dispatch, axiosError));
-};
-
-export const getCount = (dispatch, module, filter, errorCallback) => {
-
-    const suffix = getSuffix(module);
-
-    dispatch({
-        type: `GET_COUNT_${suffix}_START`
-    });
-
-    axios.post(`/${module}/count`, filter || {})
-        .then(response => {
-            dispatch({
-                type: `GET_COUNT_${suffix}`,
-                itemsCount: response.data
-            })
-        }).catch(axiosError => _.isFunction(errorCallback) && errorCallback() || showError(dispatch, axiosError));
-};
-
 export const getList = (dispatch, module) => {
 
     const suffix = getSuffix(module);

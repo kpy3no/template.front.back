@@ -7,14 +7,11 @@ module.exports = {
     entry: './src/index.js',
     output: {
         filename: 'main.js',
-        // path: path.resolve(__dirname, 'dist'),
         path: path.join(process.cwd(), 'dist'),
 
     },
     devServer: {
         contentBase: [
-            // path.join(__dirname, "public"),
-            // path.join(__dirname, 'src'),
             path.join(process.cwd(), 'public'),
             path.join(process.cwd(), 'src'),
         ],
@@ -48,7 +45,6 @@ module.exports = {
     plugins: [
         new HtmlWebPackPlugin({
             template:path.join(process.cwd(), 'public/index.html'),
-            // template: path.resolve( __dirname, 'public/index.html' ),
             filename: 'index.html'
         })
     ]

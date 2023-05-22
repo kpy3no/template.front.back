@@ -44,17 +44,3 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
-
-export const closeError = () => {
-    store.dispatch({
-        type: 'AJAX_ERROR',
-        error: undefined
-    })
-};
-
-export const closeInfo = () => {
-    store.dispatch({
-        type: 'AJAX_INFO',
-        info: undefined
-    })
-};

@@ -54,8 +54,7 @@
     "react-bootstrap": "~1.4.3"
   },
   "scripts": {
-    "start": "webpack serve --config config/dev.webpack.config.js",
-    "build": "webpack --config config/prod.webpack.config.js"
+    "start": "webpack serve --config config/dev.webpack.config.js"
   },
   "prettier": {
     "trailingComma": "all"
