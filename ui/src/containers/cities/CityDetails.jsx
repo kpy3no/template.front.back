@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import {FieldInputText} from "../common/components/fieldInputText";
 import AbstractEditForm from "../common/AbstractEditForm/AbstractEditForm";
-// import {InputText} from "../common/components/inputText";
 import {FieldInputText} from "../common/components/fieldInputText";
 
 export default function CityDetails(props) {

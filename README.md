@@ -1,40 +1,26 @@
-## Structure
-- `db` - database scripts
-- `api` - micro service that gives backend API
-- `ui` - micro front gives interface
+## Описание
+Фул стек приложение, которое реализует справочник городов. Можно смотреть справочник, наполнять, удалять. 
 
-## Technology stack
-`db`: 
-    - liquibase
-`api`:
-    - 
-`ui`:
-    -       
+## Структура
+- `backend` - Бэкенд на java.
+- `back-python` - Бэкенд на питоне.
+- `ui` - Фронтенд на react + redux.
 
-## Preparation
+Бэк на java и на питоне реализуют один и тот же функционал.
+Более детально о каждом модуле читайте соответствующие Readme.md. Например backend/Readme.md.
 
-Install:
-- [openjdk](https://openjdk.java.net)
-- [node](https://nodejs.org)
-- [docker](https://www.docker.com)
+## Подготовка
 
-## Compile artifact
+Установите:
+- [node](https://nodejs.org) - front
+- [openjdk](https://openjdk.java.net) 11 - java бэк
+- gradle - java бэк
+- python - бэк на питоне
 
-Compile project:
-```
-./gradlew clean build
-OR
-./gradlew clean assemble
-```
+## Запуск
 
-## Local launch
-
-### Start database
-
-Set up database and use liquibase scripts ([database](db/README.md)).
-
-### Start front
-go to ui folder
+### Запуск фронта
+go to ui folder (см. ui/Readme.md)
 use commands:
 npm install
 npm start
@@ -45,33 +31,12 @@ or via gradle plugin
 ./gradlew :ui:npm_run_start
 see https://github.com/node-gradle/gradle-node-plugin
 
-### Start modules
+### Запуск бек на питоне
+
+go to back-python folder (см. back-python/Readme.md)
 
 ```
-./gradlew clean assemble
-
-docker-compose build
-docker-compose up
+python main.py 
 ```
-Open browser http://localhost:3006/index.html
-
-#### Launch in cluster [Minishift](https://www.okd.io/minishift/)
-
-https://github.com/kpy3no/cd_template_front_back.git
-
-## App parameters
-
-Application parameters are passed through an external config file `application.yml`. 
-The file location is set via the application parameter`spring.config.additional-location`.
-
-## Logging parameters
-
-Logging parameters are passed through an external file `logback.xml`.
-The file location is set via the application parameter `logging.config`.
-
-## useful commands
-Docker:
- go to bash container: docker exec -it 2325925e93f6 /bin/bash
- run single service: docker-compose up -d ui
- restart single service: docker-compose restart ui
+Пропишите в браузер http://localhost:8889/cities. Должна вернуться json городов.
 

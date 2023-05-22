@@ -3,14 +3,7 @@ const initialState = {
     isLoadingItem: false,
     isLoadingCount: false,
     list: [],
-    item: {},
-    totalPages: 0,
-    totalElements: 0,
-    pagination: {
-        page: 0,
-        size: 5
-    },
-    itemsCount: 0
+    item: {}
 };
 
 export default entityType =>
@@ -47,19 +40,6 @@ export default entityType =>
                     item: action.item
                 };
 
-            case `GET_COUNT_${entity}_START`:
-                return {
-                    ...state,
-                    isLoadingCount: true
-                };
-
-            case `GET_COUNT_${entity}`:
-                return {
-                    ...state,
-                    isLoadingCount: false,
-                    itemsCount: action.itemsCount
-                };
-
             case `SAVE_${entity}`:
                 return {
                     ...state,
@@ -77,13 +57,6 @@ export default entityType =>
                 return {
                     ...state,
                     item: {}
-                };
-
-            case `ITEM_ACTION_${entity}`:
-                return {
-                    ...state,
-                    list: state.list.map(item =>
-                        item.id === action.item.id ? action.item : item)
                 };
 
             default:
