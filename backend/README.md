@@ -34,9 +34,11 @@ template.front.back/backend/src/test/java/ru/template/example
 Используется внутренняя БД H2 (см. application.yml проперти url). Файл создается в домашней директории ~/db.mv.db
 
 ```
-../gradlew :backend:clean :backend:assemble
+1) ../gradlew :backend:clean :backend:assemble
 go to build folder template.front.back/backend/build/libs and execute jar
 java -jar backend-1.0-SNAPSHOT.jar 
+
+2) Или сразу запустить ../gradlew :backend:bootrun
 ```
 
 З.Ы. При желании можно использовать БД Postgres. Надо развернуть дистрибутив, создать БД и пользователя https://stackoverflow.com/questions/30641512/create-database-from-command-line. Или через docker как вариант. + добавить зависимость в build.gradle org.postgresql:postgresql и прописать url в application.yml.

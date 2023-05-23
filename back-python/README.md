@@ -13,7 +13,10 @@ main.py - точка входа.
 ## Зависимости
 См. requirements.txt
 
+Установка зависимостей: 
+pip install -r requirements.txt
+ИЛИ pip3 install -r requirements.txt
 ## Запуск
-python main.py
+python main.py (или python3 main.py)
 Сервер поднимется на порту 8889.
 Пропишите в браузер http://localhost:8889/cities. Должна вернуться json городов.
