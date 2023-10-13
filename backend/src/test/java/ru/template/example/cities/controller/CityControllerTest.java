@@ -6,7 +6,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.template.example.cities.controller.dto.CityDto;
+import ru.template.example.cities.controller.dto.DocumentDto;
 import ru.template.example.cities.model.City;
 import ru.template.example.cities.service.CityService;
 import ru.template.example.controller.AbstractWebMvcTest;
@@ -34,8 +34,8 @@ public class CityControllerTest extends AbstractWebMvcTest {
         city.setName(name);
         when(cityService.save(any())).thenReturn(city);
 
-        var cityDto = new CityDto();
-        cityDto.setName(name);
+        var cityDto = new DocumentDto();
+        cityDto.setOrganization(name);
         mvc.perform(postAction(ROUTE, cityDto))
                 .andExpect(status().isOk())
                 .andExpect(contentJson(cityDto));

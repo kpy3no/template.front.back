@@ -42,6 +42,14 @@ export const getItem = (dispatch, module, id) => {
     })).catch(axiosError => showError(dispatch, axiosError));
 };
 
+export const send = (dispatch, module, id) => {
+    dispatch({
+        type: `GET_${module.toUpperCase()}_START`
+    });
+
+    return axios.post(`/${module}/send`, {id: id})
+};
+
 export const save = (dispatch, module, data, successCallback, errorCallback) => {
     dispatch({
         type: `SAVE_${module.toUpperCase()}_START`

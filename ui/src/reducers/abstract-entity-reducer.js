@@ -53,6 +53,19 @@ export default entityType =>
                     isLoadingItem: false
                 };
 
+            case `SEND_${entity}`:
+                return {
+                    ...state,
+                    isLoadingItem: false,
+                    item: action.item
+                };
+
+            case `SEND_${entity}_ERROR`:
+                return {
+                    ...state,
+                    isLoadingItem: false
+                };
+
             case `CLEAR_${entity}`:
                 return {
                     ...state,

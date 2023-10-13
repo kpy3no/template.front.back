@@ -4,11 +4,13 @@ import {useHistory} from 'react-router-dom';
 import EnhancedTable from "../common/components/table/table";
 import * as api from '../../api/cruds-api';
 import Loader from "../Loader";
+import {send} from "../../api/cruds-api";
 
 
 const headCells = [
     { property: 'id', disablePadding: true, label: 'ID' },
-    { property: 'name', numeric: true, disablePadding: false, label: 'Имя' }
+    { property: 'organization', numeric: true, disablePadding: false, label: 'Организация' },
+    { property: 'status', numeric: true, disablePadding: false, label: 'Статус' }
 ];
 
 // eslint-disable-next-line no-unused-vars
@@ -34,6 +36,12 @@ export default function CityList() {
         alert(error)
     });
 
+    const handleSendItem = (selected) => api.send(dispatch, 'cities', selected[0]).then(() => {
+        getList()
+    }).catch(error => {
+        getList()
+    });
+
     return (
         <div>
             <EnhancedTable
@@ -41,7 +49,7 @@ export default function CityList() {
                 toolbar={{
                     toolbarTitle: 'Города.',
                     delete: (selected) => handleDeleteItem(selected),
-                    edit: (selected) => history.push(`/cities/${selected}`),
+                    send: (selected) => handleSendItem(selected),
                     add: () => history.push(`/cities/new`)
                 }}
                 rows={list}

@@ -32,7 +32,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 export const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const { numSelected } = props;
+    const { numSelected, rows, selected } = props;
 
     return (
         <Toolbar
@@ -60,14 +60,14 @@ export const EnhancedTableToolbar = (props) => {
 
             {numSelected > 0 && (
                 <div className="row">
-                    <div hidden={props.edit && numSelected > 1} className="col-6">
-                        <Tooltip title="Редактировать">
-                            <IconButton aria-label="edit">
-                                <EditIcon onClick={props.edit} />
+                    <div hidden={numSelected > 1 || rows.filter(data => data.id === selected[0])[0].status.code !== 'NEW'} className="col-6">
+                        <Tooltip title="Отправить">
+                            <IconButton aria-label="send">
+                                <EditIcon onClick={props.send} />
                             </IconButton>
                         </Tooltip>
                     </div>
-                    <div className="col-6">
+                    <div hidden={rows.filter(data => selected.includes(data.id) && data.status.code === 'SEND' ).length > 0} className="col-6">
                         <Tooltip title="Удалить">
                             <IconButton aria-label="delete">
                                 <DeleteIcon onClick={props.delete} />

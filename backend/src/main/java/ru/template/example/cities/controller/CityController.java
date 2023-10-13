@@ -9,9 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.template.example.cities.controller.dto.CityDto;
+import ru.template.example.cities.controller.dto.CodeName;
+import ru.template.example.cities.controller.dto.DocumentDto;
 import ru.template.example.cities.controller.dto.CityDtoConverter;
+import ru.template.example.cities.controller.dto.IdDto;
 import ru.template.example.cities.controller.dto.IdsDto;
+import ru.template.example.cities.model.City;
+import ru.template.example.cities.model.Status;
 import ru.template.example.cities.service.CityService;
 
 import java.util.List;
@@ -30,12 +34,22 @@ public class CityController {
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public CityDto save(@RequestBody CityDto dto) {
+    public DocumentDto save(@RequestBody DocumentDto dto) {
         return toDto(service.save(fromDto(dto)));
     }
 
+    @PostMapping(
+            path = "send",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public DocumentDto send(@RequestBody IdDto id) {
+        City city = service.get(id.getId());
+        city.setStatus(Status.SEND);
+        return toDto(service.save(city));
+    }
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CityDto> get() {
+    public List<DocumentDto> get() {
         return service.findAll().stream()
                 .map(CityDtoConverter::toDto)
                 .collect(toList());
@@ -53,7 +67,7 @@ public class CityController {
 
     @GetMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public CityDto get(@PathVariable Long id) {
+    public DocumentDto get(@PathVariable Long id) {
         return toDto(service.get(id));
     }
 

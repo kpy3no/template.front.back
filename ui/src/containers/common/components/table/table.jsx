@@ -125,7 +125,8 @@ export default function EnhancedTable(props) {
                     />
                 </TableCell>
                 <TableCell component="th" id={labelId} scope="row" padding="none">{row.id}</TableCell>
-                <TableCell align="right">{row.name}</TableCell>
+                <TableCell align="right">{row.organization}</TableCell>
+                <TableCell align="right">{row.status.name}</TableCell>
             </TableRow>
         );
     }
@@ -137,8 +138,10 @@ export default function EnhancedTable(props) {
                     numSelected={selected.length}
                     title={props.toolbar.toolbarTitle}
                     delete={() => props.toolbar.delete(selected)}
-                    edit={() => props.toolbar.edit(selected)}
+                    send={() => props.toolbar.send(selected)}
                     add={props.toolbar.add}
+                    rows={props.rows}
+                    selected = {selected}
                 />
                 <TableContainer>
                     <Table
@@ -174,7 +177,7 @@ EnhancedTable.propTypes = {
     toolbar: PropTypes.shape({
         toolbarTitle: PropTypes.string,
         delete: PropTypes.func,
-        edit: PropTypes.func,
+        send: PropTypes.func,
         add: PropTypes.func
     }),
 };
